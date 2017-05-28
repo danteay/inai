@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="inai:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="inai.war">
+      <element id="artifact" artifact-name="inai:war exploded" />
+    </root>
+  </artifact>
+</component>
