@@ -22,7 +22,7 @@ public class SujetoObligado {
     public int articuloId;
     public int estatus;
 
-    public DB conx;
+    private transient DB conx;
 
     public SujetoObligado(DB conx) {
         this.conx = conx;
@@ -31,7 +31,7 @@ public class SujetoObligado {
     public SujetoObligado getBySujetoObligadoId(int id) throws SQLException {
         String query = "SELECT * FROM SUJETOS_OBLIGADOS WHERE SUJETO_OBLIGADO_ID = " + id;
         ResultSet res = this.conx.getStatement().executeQuery(query);
-        res.first();
+        res.next();
 
         this.sujetoObligadoId = res.getInt(1);
         this.titular = res.getString(2);

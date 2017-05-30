@@ -12,7 +12,7 @@ public class Incidencia {
     public int incidenciaId;
     public String descripcion;
 
-    public DB conx;
+    private transient DB conx;
 
     public Incidencia(DB conx) {
         this.conx = conx;

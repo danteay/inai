@@ -13,7 +13,7 @@ public class Articulo {
     public String descripcion;
     public int estatus;
 
-    public DB conx;
+    private transient DB conx;
 
     public Articulo(DB conx) {
         this.conx = conx;
@@ -22,7 +22,7 @@ public class Articulo {
     public Articulo getByArticuloId(int id) throws SQLException {
         String query = "SELECT * FROM Evaluaciones WHERE evaluacion_id = " + id;
         ResultSet res = this.conx.getStatement().executeQuery(query);
-        res.first();
+        res.next();
 
         this.articuloId = res.getInt(1);
         this.articuloClave = res.getString(2);

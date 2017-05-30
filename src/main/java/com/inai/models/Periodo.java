@@ -17,7 +17,7 @@ public class Periodo {
     public String mes;
     public int mostrar;
 
-    public DB conx;
+    private transient DB conx;
 
     public Periodo(DB conx) {
         this.conx = conx;
@@ -26,7 +26,7 @@ public class Periodo {
     public Periodo getByPeriodoId(int id) throws SQLException {
         String query = "SELECT * FROM Periodos WHERE periodo_id = " + id;
         ResultSet res = this.conx.getStatement().executeQuery(query);
-        res.first();
+        res.next();
 
         this.periodoId = res.getInt(1);
         this.periodoClave = res.getString(2);

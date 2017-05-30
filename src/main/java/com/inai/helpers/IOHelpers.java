@@ -36,7 +36,9 @@ public class IOHelpers {
         }
 
         if (extras != null && extras.size() > 0) {
-            for (Map.Entry<String, Object> entry : response.entrySet()) {
+            System.out.println("====>> Entra For extras:");
+            for (Map.Entry<String, Object> entry : extras.entrySet()) {
+                System.out.println("====>> " + entry.getKey());
                 response.put(entry.getKey(), entry.getValue());
             }
         }
