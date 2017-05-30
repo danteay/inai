@@ -1,0 +1,11 @@
+SELECT
+  'Articulo ' || a.ARTICULO_CLAVE || ' ' || a.DESCRIPCION Articulo,
+  a.ARTICULO_ID
+  from
+    ARTICULOS a,
+    SUJETOS_ARTICULOS sa,
+    EVALUACIONES e
+    Where sa.SUJETO_OBLIGADO_ID = e.SUJETO_OBLIGADO_ID
+      And a.ARTICULO_ID = sa.ARTICULO_ID
+      And e.EVALUACION_ID = 7601
+    order by a.ARTICULO_ID;
