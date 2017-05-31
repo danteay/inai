@@ -33,21 +33,12 @@ public class Rest {
         try {
             DB conx = new DB();
             Evaluacion evaluacion = new Evaluacion(conx);
-            SujetoObligado sujetoObligado = new SujetoObligado(conx);
-            Articulo articulos = new Articulo(conx);
 
-            Map<String, Object> data = new HashMap<>();
-
-            evaluacion = evaluacion.getByEvaluacionId(id);
-
-            data.put("evaluacion", evaluacion);
-            data.put("sujetoObligado", sujetoObligado.getBySujetoObligadoId(evaluacion.sujetoObligadoId));
-
-            resp.put("data", data);
+            resp.put("data", evaluacion.getByEvaluacionId(id));
 
             System.out.println(resp);
-
         } catch(Exception e) {
+            e.printStackTrace();
             resp.put("error", e.getMessage());
             code = 500;
         }

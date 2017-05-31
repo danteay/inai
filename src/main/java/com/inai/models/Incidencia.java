@@ -19,7 +19,7 @@ public class Incidencia {
     }
 
     public Incidencia[] getAll() throws SQLException {
-        String query = "SELECT * FROM Incidencias";
+        String query = "SELECT * FROM INCIDENCIAS";
         ResultSet res = this.conx.getStatement().executeQuery(query);
 
         Incidencia[] list = new Incidencia[DBHelpers.resultSetLength(res)];
@@ -29,6 +29,7 @@ public class Incidencia {
             list[i] = new Incidencia(this.conx);
             list[i].incidenciaId = res.getInt(1);
             list[i].descripcion = res.getString(2);
+            i++;
         }
 
         return list;

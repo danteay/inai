@@ -1,6 +1,7 @@
 package com.inai.models;
 
 import com.inai.libs.DB;
+import com.inai.models.output.EvaluacionInfo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ public class Evaluacion {
     public int articuloId;
     public Date fechaEvaluacion;
     public String usuarioEvalua;
-    public int status;
+    public int estatus;
     public String respuestas;
     public int tipoEvaluacion;
     public int cierre;
@@ -26,40 +27,61 @@ public class Evaluacion {
         this.conx = conx;
     }
 
-    public Evaluacion getByEvaluacionId(int id) throws SQLException {
-        String query = "SELECT * FROM Evaluaciones WHERE evaluacion_id = " + id;
+    public EvaluacionInfo getByEvaluacionId(int id) throws SQLException {
+        String query = "SELECT e.*, so.* FROM EVALUACIONES e, SUJETOS_OBLIGADOS so " +
+                "WHERE e.SUJETO_OBLIGADO_ID = so.SUJETO_OBLIGADO_ID " +
+                "AND e.EVALUACION_ID = " + id;
+
         ResultSet res = this.conx.getStatement().executeQuery(query);
         res.next();
 
-        this.evaluacionId = res.getInt(1);
-        this.periodoId = res.getInt(2);
-        this.sujetoObligadoId = res.getInt(3);
-        this.articuloId = res.getInt(4);
-        this.fechaEvaluacion = res.getDate(5);
-        this.usuarioEvalua = res.getString(6);
-        this.status = res.getInt(7);
-        this.respuestas = res.getString(8);
-        this.tipoEvaluacion = res.getInt(9);
-        this.cierre = res.getInt(10);
-        this.resultado = res.getDouble(11);
+        EvaluacionInfo info = new EvaluacionInfo();
+        info.evaluacionId = res.getInt(1);
+        info.periodoId = res.getInt(2);
+        info.articuloId = res.getInt(4);
+        info.fechaEvaluacion = res.getDate(5);
+        info.usuarioEvalua = res.getString(6);
+        info.estatus = res.getInt(7);
+        info.respuestas = res.getString(8);
+        info.tipoEvaluacion = res.getInt(9);
+        info.cierre = res.getInt(10);
+        info.resultado = res.getDouble(11);
 
-        return this;
+        info.sujetoObligado = new SujetoObligado(this.conx);
+        info.sujetoObligado.sujetoObligadoId = res.getInt(12);
+        info.sujetoObligado.titular = res.getString(13);
+        info.sujetoObligado.enlace = res.getString(14);
+        info.sujetoObligado.direccion = res.getString(15);
+        info.sujetoObligado.telefonos = res.getString(16);
+        info.sujetoObligado.portalInternet = res.getString(17);
+        info.sujetoObligado.correoWeb = res.getString(18);
+        info.sujetoObligado.tipoSujetoObligadoId = res.getInt(19);
+        info.sujetoObligado.sujeto = res.getString(20);
+        info.sujetoObligado.usuario = res.getString(21);
+        info.sujetoObligado.password = res.getString(22);
+        info.sujetoObligado.articuloId = res.getInt(23);
+        info.sujetoObligado.estatus = res.getInt(24);
+
+        Articulo articulos = new Articulo(this.conx);
+        info.articulos = articulos.getByEvaluacionId(id);
+
+        return info;
     }
 
-    public void update(float percent, boolean cierre) throws SQLException {
+    public void update(int id, float percent, boolean cierre) throws SQLException {
         String query = "UPDATE Evaluaciones SET resultado = "+percent+", fecha_evaluacion = CURRENT_DATE - 1";
 
         if (cierre) {
             query += " cierre = 1";
         }
 
-        query += " WHERE evaluacion_id = " + this.evaluacionId;
+        query += " WHERE evaluacion_id = " + id;
 
         this.conx.getStatement().executeQuery(query);
     }
 
-    public void openEvaluacion() throws SQLException {
-        String query = "UPDATE Evaluaciones SET cierre = 0 WHERE evaluacion_id = " + this.evaluacionId;
+    public void openEvaluacion(int id) throws SQLException {
+        String query = "UPDATE Evaluaciones SET cierre = 0 WHERE evaluacion_id = " + id;
         this.conx.getStatement().executeQuery(query);
     }
 }
