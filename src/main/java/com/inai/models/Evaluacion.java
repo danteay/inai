@@ -20,7 +20,7 @@ public class Evaluacion {
     public int cierre;
     public double resultado;
 
-    public DB conx;
+    private transient DB conx;
 
     public Evaluacion(DB conx) {
         this.conx = conx;
@@ -29,7 +29,7 @@ public class Evaluacion {
     public Evaluacion getByEvaluacionId(int id) throws SQLException {
         String query = "SELECT * FROM Evaluaciones WHERE evaluacion_id = " + id;
         ResultSet res = this.conx.getStatement().executeQuery(query);
-        res.first();
+        res.next();
 
         this.evaluacionId = res.getInt(1);
         this.periodoId = res.getInt(2);
