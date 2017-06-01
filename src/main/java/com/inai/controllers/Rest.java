@@ -5,6 +5,7 @@ import com.inai.libs.DB;
 import com.inai.models.Articulo;
 import com.inai.models.Evaluacion;
 import com.inai.models.SujetoObligado;
+import com.inai.models.output.EvaluacionInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -33,8 +34,13 @@ public class Rest {
         try {
             DB conx = new DB();
             Evaluacion evaluacion = new Evaluacion(conx);
+            EvaluacionInfo info = evaluacion.getByEvaluacionId(id);
 
-            resp.put("data", evaluacion.getByEvaluacionId(id));
+            if (info == null) {
+                code = 404;
+            } else {
+                resp.put("data", info);
+            }
 
             System.out.println(resp);
         } catch(Exception e) {

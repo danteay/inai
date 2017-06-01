@@ -4,6 +4,7 @@ package com.inai.models.output;
 import com.inai.models.Articulo;
 import com.inai.models.SujetoObligado;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class EvaluacionInfo {
@@ -19,5 +20,5 @@ public class EvaluacionInfo {
     public int tipoEvaluacion;
     public int cierre;
     public double resultado;
-    public Articulo[] articulos;
+    public ArrayList<Articulo> articulos;
 }

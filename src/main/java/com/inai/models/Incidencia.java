@@ -6,6 +6,7 @@ import com.inai.libs.DB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Incidencia {
 
@@ -18,18 +19,18 @@ public class Incidencia {
         this.conx = conx;
     }
 
-    public Incidencia[] getAll() throws SQLException {
+    public ArrayList<Incidencia> getAll() throws SQLException {
         String query = "SELECT * FROM INCIDENCIAS";
         ResultSet res = this.conx.getStatement().executeQuery(query);
 
-        Incidencia[] list = new Incidencia[DBHelpers.resultSetLength(res)];
+        ArrayList<Incidencia> list = new ArrayList<>();
 
-        int i = 0;
         while (res.next()) {
-            list[i] = new Incidencia(this.conx);
-            list[i].incidenciaId = res.getInt(1);
-            list[i].descripcion = res.getString(2);
-            i++;
+            Incidencia ica = new Incidencia(this.conx);
+            ica.incidenciaId = res.getInt(1);
+            ica.descripcion = res.getString(2);
+
+            list.add(ica);
         }
 
         return list;

@@ -6,6 +6,7 @@ import com.inai.libs.DB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Articulo {
 
@@ -33,7 +34,7 @@ public class Articulo {
         return this;
     }
 
-    public Articulo[] getByEvaluacionId(int id) throws SQLException {
+    public ArrayList<Articulo> getByEvaluacionId(int id) throws SQLException {
         String query = "SELECT a.* FROM ARTICULOS a, SUJETOS_ARTICULOS sa, EVALUACIONES e " +
                 "WHERE sa.SUJETO_OBLIGADO_ID = e.SUJETO_OBLIGADO_ID " +
                 "AND a.ARTICULO_ID = sa.ARTICULO_ID " +
@@ -43,19 +44,16 @@ public class Articulo {
 
         ResultSet res = this.conx.getStatement().executeQuery(query);
 
-        int length = DBHelpers.resultSetLength(res);
-        System.out.println("=====>> List length: "+length);
+        ArrayList<Articulo> list = new ArrayList<>();
 
-        Articulo[] list = new Articulo[length];
-
-        int i = 0;
         while (res.next()) {
-            list[i] = new Articulo(this.conx);
-            list[i].articuloId = res.getInt(1);
-            list[i].articuloClave = res.getString(2);
-            list[i].descripcion = res.getString(3);
-            list[i].estatus = res.getInt(4);
-            i++;
+            Articulo art = new Articulo(this.conx);
+            art.articuloId = res.getInt(1);
+            art.articuloClave = res.getString(2);
+            art.descripcion = res.getString(3);
+            art.estatus = res.getInt(4);
+
+            list.add(art);
         }
 
         return list;

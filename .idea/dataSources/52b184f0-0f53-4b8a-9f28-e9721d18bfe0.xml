@@ -4,7 +4,7 @@
     <root id="1"/>
     <schema id="2" parent="1" name="IDAIP">
       <ObjectId>59</ObjectId>
-      <IntrospectionTimestamp>2017-05-30.16:16:35</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2017-05-31.23:38:52</IntrospectionTimestamp>
       <CreatedTimestamp>2014-09-09.22:53:07</CreatedTimestamp>
       <ModifiedTimestamp>2017-05-28.08:12:03</ModifiedTimestamp>
       <Current>1</Current>
