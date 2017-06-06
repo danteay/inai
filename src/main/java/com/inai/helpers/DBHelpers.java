@@ -6,14 +6,15 @@ import java.sql.SQLException;
 
 public class DBHelpers {
 
-    public static int resultSetLength(ResultSet res) throws SQLException {
-        int rowcount = 0;
-        if (res.last()) {
-            rowcount = res.getRow();
-            res.beforeFirst();
+    public static boolean isEmptyResultSet(ResultSet res) {
+        try {
+            res.getObject(1);
+            return false;
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return true;
         }
-
-        return rowcount;
     }
 
 }

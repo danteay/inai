@@ -4,7 +4,7 @@
     <root id="1"/>
     <schema id="2" parent="1" name="IDAIP">
       <ObjectId>59</ObjectId>
-      <IntrospectionTimestamp>2017-05-30.16:16:35</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2017-05-31.23:38:52</IntrospectionTimestamp>
       <CreatedTimestamp>2014-09-09.22:53:07</CreatedTimestamp>
       <ModifiedTimestamp>2017-05-28.08:12:03</ModifiedTimestamp>
       <Current>1</Current>
@@ -2245,17 +2245,17 @@ WEBPAGE_ID</ColNames>
     <column id="463" parent="88" name="SHOW_ADD_ROW">
       <Position>16</Position>
       <DataType>VARCHAR2(1)|0</DataType>
-      <DefaultExpression>&apos;N&apos; </DefaultExpression>
+      <DefaultExpression>&apos;N&apos;</DefaultExpression>
     </column>
     <column id="464" parent="88" name="SHOW_EDIT_ROW">
       <Position>17</Position>
       <DataType>VARCHAR2(1)|0</DataType>
-      <DefaultExpression>&apos;N&apos; </DefaultExpression>
+      <DefaultExpression>&apos;N&apos;</DefaultExpression>
     </column>
     <column id="465" parent="88" name="SHOW_SEARCH">
       <Position>18</Position>
       <DataType>VARCHAR2(1)|0</DataType>
-      <DefaultExpression>&apos;Y&apos; </DefaultExpression>
+      <DefaultExpression>&apos;Y&apos;</DefaultExpression>
     </column>
     <column id="466" parent="88" name="MAX_ROW_COUNT">
       <Position>19</Position>
