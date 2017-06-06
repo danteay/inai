@@ -35,11 +35,10 @@ public class Articulo {
     }
 
     public ArrayList<Articulo> getByEvaluacionId(int id) throws SQLException {
-        String query = "SELECT a.* FROM ARTICULOS a, SUJETOS_ARTICULOS sa, EVALUACIONES e " +
-                "WHERE sa.SUJETO_OBLIGADO_ID = e.SUJETO_OBLIGADO_ID " +
+        String query = "SELECT a.* FROM ARTICULOS a, EVALUACIONES_ARTICULOS sa, EVALUACIONES e " +
+                "WHERE sa.EVALUACION_ID = e.EVALUACION_ID " +
                 "AND a.ARTICULO_ID = sa.ARTICULO_ID " +
                 "AND e.EVALUACION_ID = " + id + " " +
-                "AND a.ESTATUS = 1 " +
                 "ORDER BY a.ARTICULO_ID";
 
         ResultSet res = this.conx.getStatement().executeQuery(query);

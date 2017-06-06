@@ -1,7 +1,6 @@
 package com.inai.models;
 
 
-import com.inai.helpers.DBHelpers;
 import com.inai.libs.DB;
 
 import java.sql.ResultSet;
