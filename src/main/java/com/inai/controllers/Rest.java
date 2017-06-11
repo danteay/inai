@@ -2,10 +2,9 @@ package com.inai.controllers;
 
 import com.inai.helpers.IOHelpers;
 import com.inai.libs.DB;
-import com.inai.models.Articulo;
-import com.inai.models.Evaluacion;
-import com.inai.models.Pregunta;
-import com.inai.models.SujetoObligado;
+import com.inai.models.*;
+import com.inai.models.input.UpdateQuestion;
+import com.inai.models.output.AnswersInfo;
 import com.inai.models.output.EvaluacionInfo;
 import com.inai.models.output.Pagination;
 
@@ -28,7 +27,7 @@ import java.util.Map;
 public class Rest {
 
     @GET
-    @Path("/evaluations/{evaluacion_id}")
+    @Path("/evaluaciones/{evaluacion_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getArticlesForEvaluation(@Context HttpServletRequest req, @PathParam("evaluacion_id") int id) {
         Map<String, Object> resp = new HashMap<>();
@@ -46,6 +45,7 @@ public class Rest {
             }
 
             System.out.println(resp);
+            conx.close();
         } catch(Exception e) {
             e.printStackTrace();
             resp.put("error", e.getMessage());
@@ -97,6 +97,8 @@ public class Rest {
 
             resp.put("pagination", pagination);
             resp.put("data", list);
+
+            conx.close();
         } catch(Exception e) {
             e.printStackTrace();
             resp.put("error", e.getMessage());
@@ -105,5 +107,75 @@ public class Rest {
 
         return IOHelpers.response(req, code, resp);
     }
+
+    @GET
+    @Path("/preguntas/{pregunta_id}/respuestas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAnswersForQuestion(@Context HttpServletRequest req, @PathParam("pregunta_id") int id) {
+        Map<String, Object> resp = new HashMap<>();
+        int code = 200;
+
+        try {
+            DB conx = new DB();
+            Respuesta respuestas = new Respuesta(conx);
+
+            AnswersInfo info = new AnswersInfo();
+            info.adjetivos = respuestas.getAdjetivosByarticuloFraccionId(id);
+            info.sustantivos = respuestas.getSustantivosByarticuloFraccionId(id);
+
+            resp.put("data", info);
+
+            conx.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+            resp.put("error", e.getMessage());
+            code = 500;
+        }
+
+        return IOHelpers.response(req, code, resp);
+    }
+
+    @GET
+    @Path("/incidencias")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getIncidencias(@Context HttpServletRequest req) {
+        Map<String, Object> resp = new HashMap<>();
+        int code = 200;
+
+        try {
+            DB conx = new DB();
+            Incidencia incidencias = new Incidencia(conx);
+
+            resp.put("data", incidencias.getAll());
+        } catch(Exception e) {
+            e.printStackTrace();
+            resp.put("error", e.getMessage());
+            code = 500;
+        }
+
+        return IOHelpers.response(req, code, resp);
+    }
+
+    @PUT
+    @Path("/respuestas/update_once")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateQuestion(@Context HttpServletRequest req, UpdateQuestion data) {
+        Map<String, Object> resp = new HashMap<>();
+        int code = 200;
+
+        try {
+            DB conx = new DB();
+            Respuesta respuestas = new Respuesta(conx);
+
+            respuestas.update(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.put("error", e.getMessage());
+            code = 500;
+        }
+
+        return IOHelpers.response(req, code, resp);
+    }
+
 
 }
