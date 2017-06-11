@@ -107,4 +107,16 @@ public class Respuesta {
         }
     }
 
+    /**
+     * Update batch of info for quiestions
+     *
+     * @param info array of info update
+     * @throws SQLException Exeption in sql execution
+     */
+    public void updateMany(UpdateQuestion[] info) throws SQLException {
+        for (UpdateQuestion data: info) {
+            this.update(data);
+        }
+    }
+
 }
