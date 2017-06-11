@@ -147,6 +147,7 @@ public class Rest {
             Incidencia incidencias = new Incidencia(conx);
 
             resp.put("data", incidencias.getAll());
+            conx.close();
         } catch(Exception e) {
             e.printStackTrace();
             resp.put("error", e.getMessage());
@@ -168,6 +169,7 @@ public class Rest {
             Respuesta respuestas = new Respuesta(conx);
 
             respuestas.update(data);
+            conx.close();
         } catch (Exception e) {
             e.printStackTrace();
             resp.put("error", e.getMessage());
@@ -177,5 +179,24 @@ public class Rest {
         return IOHelpers.response(req, code, resp);
     }
 
+    @PUT
+    @Path("/evaluacion/{evaluacion_id}/close")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response closeEvaluation(@Context HttpServletRequest req, @PathParam("evaluacion_id") int id) {
+        Map<String, Object> resp = new HashMap<>();
+        int code = 200;
 
+        try {
+            DB conx = new DB();
+            Evaluacion evaluaciones = new Evaluacion(conx);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.put("error", e.getMessage());
+            code = 500;
+        }
+
+        return IOHelpers.response(req, code, resp);
+    }
 }

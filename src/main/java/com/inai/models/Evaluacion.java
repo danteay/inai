@@ -27,6 +27,13 @@ public class Evaluacion {
         this.conx = conx;
     }
 
+    /**
+     * Get basic information for evaluacion
+     *
+     * @param id evaluacion ID
+     * @return EvaluacionInfo and SujetoObligado
+     * @throws SQLException Exception in sql execution
+     */
     public EvaluacionInfo getByEvaluacionId(int id) throws SQLException {
         String query = "SELECT e.*, so.* FROM EVALUACIONES e, SUJETOS_OBLIGADOS so " +
                 "WHERE e.SUJETO_OBLIGADO_ID = so.SUJETO_OBLIGADO_ID " +
@@ -71,6 +78,14 @@ public class Evaluacion {
         }
     }
 
+    /**
+     * Update and manage partial saving and close
+     *
+     * @param id Evaluation ID
+     * @param percent percent of total questions that was response
+     * @param cierre flag to close evaluation
+     * @throws SQLException Exeption in sql execution
+     */
     public void update(int id, float percent, boolean cierre) throws SQLException {
         String query = "UPDATE Evaluaciones SET resultado = "+percent+", fecha_evaluacion = CURRENT_DATE - 1";
 
