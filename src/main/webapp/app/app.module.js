@@ -9,7 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms"); // <-- NgModel lives here
-var app_component_1 = require("./app.component");
+var app_top_nav_1 = require("./app.top-nav");
+var app_sujeto_obligado_1 = require("./app.sujeto-obligado");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -22,9 +23,13 @@ AppModule = __decorate([
             forms_1.FormsModule // <-- import the FormsModule before binding with [(ngModel)]
         ],
         declarations: [
-            app_component_1.AppComponent
+            app_top_nav_1.TopNav,
+            app_sujeto_obligado_1.SujetoObligado
         ],
-        bootstrap: [app_component_1.AppComponent]
+        bootstrap: [
+            app_top_nav_1.TopNav,
+            app_sujeto_obligado_1.SujetoObligado
+        ]
     })
 ], AppModule);
 exports.AppModule = AppModule;

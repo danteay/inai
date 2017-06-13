@@ -2,7 +2,8 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms'; // <-- NgModel lives here
 
-import { AppComponent }  from './app.component';
+import { TopNav }  from './app.top-nav';
+import { SujetoObligado } from './app.sujeto-obligado';
 
 @NgModule({
     imports: [
@@ -10,8 +11,12 @@ import { AppComponent }  from './app.component';
         FormsModule // <-- import the FormsModule before binding with [(ngModel)]
     ],
     declarations: [
-        AppComponent
+        TopNav,
+        SujetoObligado
     ],
-    bootstrap: [ AppComponent ]
+    bootstrap: [
+        TopNav,
+        SujetoObligado
+    ]
 })
 export class AppModule { }
