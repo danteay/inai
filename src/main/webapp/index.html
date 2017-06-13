@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,7 +6,8 @@
     <base href="/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="semanticui/semantic.min.css">
+    <link rel="stylesheet" href="css/general.css">
 
     <!-- Polyfills -->
     <script src="node_modules/core-js/client/shim.min.js"></script>
@@ -18,9 +20,17 @@
 </head>
 
 <body>
-<h2>Jersey RESTful Web Application!</h2>
-<p><a href="api/v1/evaluations/7544">Jersey resource</a></p>
+    <top-nav></top-nav>
 
-<my-app>Loading...</my-app>
+    <main class="ui container">
+        <div class="ui gird">
+            <div class="sixteen wide column">
+                <sujeto-obligado></sujeto-obligado>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="semanticui/semantic.min.js"></script>
 </body>
 </html>
