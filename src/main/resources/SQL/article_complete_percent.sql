@@ -1,0 +1,16 @@
+CREATE OR REPLACE FUNCTION java_article_complete_percent(
+  artId IN NUMBER
+) RETURN NUMBER
+IS
+  perc number;
+BEGIN
+
+
+  RETURN 0;
+EXCEPTION
+  WHEN OTHERS THEN
+    ROLLBACK;
+
+  RETURN 0;
+END;
+/

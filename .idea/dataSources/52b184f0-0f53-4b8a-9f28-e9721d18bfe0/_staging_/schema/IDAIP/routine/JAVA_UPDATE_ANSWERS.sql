@@ -1,0 +1,27 @@
+CREATE OR REPLACE FUNCTION java_update_answers(
+  resp IN NUMBER,
+  efId IN NUMBER,
+  afrId IN NUMBER,
+  coment IN VARCHAR2
+) RETURN NUMBER IS
+  BEGIN
+    UPDATE DET_EVAL_FRACCIONES
+    SET RESPUESTA = resp
+    WHERE EVALUACION_FRACCION_ID = efId
+          AND ART_FRACC_RESPUESTA_ID = afrId;
+
+    UPDATE EVALUACIONES_FRACCIONES
+    SET
+      COMENTARIO = coment,
+      RESPUESTA = resp
+    WHERE EVALUACION_FRACCION_ID = efId;
+
+    RETURN 1;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      ROLLBACK;
+    
+    RETURN 0;
+  END java_update_answers;
+/

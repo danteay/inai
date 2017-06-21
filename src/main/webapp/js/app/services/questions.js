@@ -1,12 +1,17 @@
-define(function(){
+define(function() {
     return {
-        get: function(id) {
+        getByArticle: function(id) {
+            console.log('=====>> /api/v1/articulos/' + id + '/preguntas');
+
             return new Promise(function(resolve, reject) {
                 $.ajax({
                     method: 'get',
-                    url: '/api/v1/evaluaciones/'+id,
+                    url: '/api/v1/articulos/' + id + '/preguntas',
                     success: function(res) {
-                        resolve(res);
+                        resolve({
+                            data: res,
+                            articuloId: id
+                        });
                     },
                     error: function(err) {
                         reject({
@@ -19,4 +24,3 @@ define(function(){
         }
     };
 });
-

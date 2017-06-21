@@ -1,17 +1,46 @@
-var evalInfo = null;
+var evalId = 0;
 
-require(['urijs/URI'], function(URI) {
-    const evalId = URI(location.href).id;
-    console.log(evalId);
+require(
+    [
+        'urijs/URI',
+        'services/evaluation',
+        'components/accordion'
+    ],
+    function(
+        URI,
+        Evaluation,
+        Accordion
+    ) {
+        const query = URI(location.href).query(true);
+        evalId = query.id;
 
-    require(['evaluation/Evaluation'], function(Evaluation) {
-        evalInfo = Evaluation.get(evalId);
-    });
-});
+        Evaluation.get(query.id)
+            .then(function(res) {
+                console.log(res);
+                fillData(res.data);
 
-$(document).ready(function(){
+                try {
+                    Accordion.render('#fracciones', res.data.articulos);
+                } catch (e) {
+                    return Promise.reject(e)
+                }
+            })
+            .catch(function(err) {
+                location.href = '/error.html?code='+err.code;
+            });
+    }
+);
 
-    console.log(evalInfo);
+function fillSujetoObligado(data) {
+    $('#nombreSO').html(data.sujeto);
+    $('#portalSO').html(data.portalInternet);
+    $('#correoSO').html(data.correoWeb);
+    $('#direccion').html(data.direccion);
+}
 
-});
+function fillData(data) {
+    fillSujetoObligado(data.sujetoObligado);
 
+    $('#fechaEval').html(data.fechaEvaluacion);
+    $('#fullPercent').html(data.resultado.toFixed(2));
+}

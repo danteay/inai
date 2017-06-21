@@ -1,6 +1,7 @@
 require.config({
     paths: {
         urijs: 'js/urijs/src',
-        evaluation: 'js/app/services/evaluation'
+        services: 'js/app/services',
+        components: 'js/app/components'
     }
 });
