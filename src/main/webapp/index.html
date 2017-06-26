@@ -6,31 +6,25 @@
 
         <link rel="stylesheet" href="js/semantic/dist/semantic.min.css">
         <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/loader.css">
     </head>
 
     <body>
+        <div id="main-loader" class="loadercp"></div>
+
         <nav class="ui fixed inverted menu">
             <div class="ui container">
-                <a href="#" class="header item">
-                    <img class="logo" src="http://www.lja.mx/wp-content/uploads/2016/05/inai.png">
-                </a>
+                <a href="#" class="header item">INAI</a>
 
                 <a href="#" class="item right">Porcentaje: <span id="fullPercent">0</span> %</a>
 
-                <div class="ui simple dropdown item right">
-                    Acciones <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a class="item" href="#">Seleccionar todo</a>
-                        <a class="item" href="#">Limpiar verificación</a>
-                        <a href="#" class="item">No publica portal de internet</a>
-                        <a href="#" class="item">Recalcular total</a>
-                    </div>
+                <div class="item right">
+                    <a id="finish" href="#" class="ui primary">Finalizar</a>
                 </div>
             </div>
         </nav>
 
         <main class="ui container">
-
             <div class="ui grid">
                 <div class="sixteen wide column info-so">
                     <div class="ui piled segment">
@@ -52,7 +46,6 @@
 
                 <div id="fracciones" class="sixteen wide column"></div>
             </div>
-
         </main>
 
         <script src="js/jquery/dist/jquery.min.js"></script>

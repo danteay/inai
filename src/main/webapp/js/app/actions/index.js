@@ -1,18 +1,18 @@
-var evalId = 0;
-
 require(
     [
         'urijs/URI',
         'services/evaluation',
-        'components/accordion'
+        'components/accordion',
+        'components/loader'
     ],
     function(
         URI,
         Evaluation,
-        Accordion
+        Accordion,
+        Loader
     ) {
+        Loader.render('#main-loader');
         const query = URI(location.href).query(true);
-        evalId = query.id;
 
         Evaluation.get(query.id)
             .then(function(res) {
@@ -21,8 +21,9 @@ require(
 
                 try {
                     Accordion.render('#fracciones', res.data.articulos);
+                    $('#main-loader').css('display', 'none');
                 } catch (e) {
-                    return Promise.reject(e)
+                    return Promise.reject(e);
                 }
             })
             .catch(function(err) {

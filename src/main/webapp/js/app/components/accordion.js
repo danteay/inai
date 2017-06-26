@@ -2,7 +2,8 @@ define(function(){
     return {
         required: [
             'services/questions',
-            'components/pagination'
+            'components/pagination',
+            'components/question'
         ],
 
         component: `
@@ -11,16 +12,56 @@ define(function(){
         </div>`,
 
         item: `
-        <div class="title">
+        <div class="title" data-article="{{articleId}}">
             <i class="dropdown icon"></i>
             {{title}} 
-            <span style="float: right">Completado: {{artPrecent}} %</span>
+            <span style="float: right;">Completado: {{artPrecent}} %</span>
         </div>
         <div class="content">
-            <p id="preguntas-art-{{art_question_id}}" class="transition hidden"></p>
+            <div id="preguntas-art-{{articleId}}" class="transition hidden"></div>
             
-            <p id="pagination-art-{{art_pag_id}}" class="transition hidden"></p>
+            <p class="transition hidden">
+                <div class="ui grid">
+                    <div id="pagination-art-{{articleId}}" class="twelve wide column"></div>
+                    <div class="four wide column text-right">
+                        <button class="ui primary button">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </p>
         </div>`,
+
+        onClick: function(
+            QuestionsService,
+            Pagination,
+            Question
+        ) {
+            $('.ui.accordion .title').click(function(){
+                var articleId = $(this).attr('data-article');
+
+                QuestionsService.getByArticle(articleId)
+                    .then(function(res) {
+                        var questionsId = '#preguntas-art-'+res.articuloId;
+
+                        if ($(questionsId).html() === '') {
+                            for (var i = 0; i < res.data.data.length; i++) {
+                                Question.add(questionsId, res.data.data[i]);
+                            }
+                        }
+
+                        var pagInfo = {
+                            pag: res.data.pagination,
+                            artId: res.articuloId
+                        };
+
+                        Pagination.render('#pagination-art-'+res.articuloId, pagInfo);
+                    })
+                    .catch(function(err) {
+                        throw err;
+                    });
+            });
+        },
 
         render: function(cId, data) {
             var _this = this;
@@ -28,7 +69,8 @@ define(function(){
             require(this.required,
                 function(
                     QuestionsService,
-                    Pagination
+                    Pagination,
+                    Question
                 ) {
                     var items = '';
 
@@ -38,17 +80,9 @@ define(function(){
 
                         var aux = _this.item
                             .replace('{{title}}', title)
-                            .replace('{{art_question_id}}', articuloId)
-                            .replace('{{art_pag_id}}', articuloId);
-
-                        QuestionsService.getByArticle(articuloId)
-                            .then(function(res) {
-                                console.log(res);
-                                Pagination.render('#pagination-art-'+res.articuloId, res.data.pagination)
-                            })
-                            .catch(function(err) {
-                                throw err;
-                            });
+                            .replace('{{articleId}}', articuloId)
+                            .replace('{{articleId}}', articuloId)
+                            .replace('{{articleId}}', articuloId);
 
                         items = items + aux;
                     }
@@ -57,6 +91,12 @@ define(function(){
 
                     $(cId).html(component);
                     $('.ui.accordion').accordion();
+
+                    _this.onClick(
+                        QuestionsService,
+                        Pagination,
+                        Question
+                    );
                 }
             );
         }

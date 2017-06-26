@@ -1,17 +1,18 @@
 define(function() {
     return {
-        getByArticle: function(id, page = 1) {
-            return new Promise(function(resolve, reject) {
+        getByQuestion: function(id) {
+            return new Promise(function(resolve, reject){
                 $.ajax({
-                    method: 'get',
-                    url: '/api/v1/articulos/' + id + '/preguntas?page='+page,
+                    url: '/api/v1/preguntas/' + id + '/respuestas',
+                    type: 'get',
                     success: function(res) {
                         resolve({
-                            data: res,
-                            articuloId: id
+                            afId: id,
+                            info: res
                         });
                     },
                     error: function(err) {
+                        console.log(err);
                         reject({
                             code: err.status,
                             error: true
