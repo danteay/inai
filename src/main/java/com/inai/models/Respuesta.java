@@ -17,6 +17,7 @@ public class Respuesta {
     public int orden;
     public int status;
     public int tipoCriterioId;
+    public int checked;
 
     private transient DB conx;
 
@@ -28,14 +29,37 @@ public class Respuesta {
      * Get Answers of Adjective type for a question
      *
      * @param afId Question articuloFraccionId
+     * @param eval Evaluation ID
      * @return ArrayList of Respuesta objects
      * @throws SQLException Execution error in query
      */
-    public ArrayList<Respuesta> getAdjetivosByarticuloFraccionId(int afId) throws SQLException {
-        String query = "SELECT * FROM ART_FRACC_RESPUESTAS " +
-                "WHERE ARTICULO_FRACCION_ID = " + afId + " " +
-                "AND TIPO_CRITERIO_ID = 1 " +
-                "ORDER BY ORDEN";
+    public ArrayList<Respuesta> getAdjetivosByarticuloFraccionId(int eval, int afId) throws SQLException {
+        String query = "SELECT " +
+            "aux.*, " +
+            "(\n" +
+            "  CASE WHEN def.RESPUESTA > 0 THEN 1 " +
+            "    ELSE 0 " +
+            "  END " +
+            ") AS checked " +
+            "FROM DET_EVAL_FRACCIONES def, ( " +
+            "  SELECT " +
+            "    afr.ART_FRACC_RESPUESTA_ID, " +
+            "    afr.ARTICULO_FRACCION_ID, " +
+            "    afr.RESPUESTA, " +
+            "    afr.VALOR, " +
+            "    afr.ORDEN, " +
+            "    afr.ESTATUS, " +
+            "    afr.TIPO_CRITERIO_ID, " +
+            "    ef.EVALUACION_FRACCION_ID " +
+            "  FROM EVALUACIONES_FRACCIONES ef " +
+            "    INNER JOIN ART_FRACC_RESPUESTAS afr " +
+            "      ON ef.ARTICULO_FRACCION_ID = afr.ARTICULO_FRACCION_ID " +
+            "  WHERE ef.EVALUACION_ID = " + eval + " " +
+            "        AND afr.ARTICULO_FRACCION_ID = " + afId + " " +
+            ") aux " +
+            "WHERE def.EVALUACION_FRACCION_ID = aux.EVALUACION_FRACCION_ID" +
+            "  AND def.ART_FRACC_RESPUESTA_ID = aux.ART_FRACC_RESPUESTA_ID" +
+            "  ORDER BY aux.ORDEN";
 
         ResultSet res = this.conx.getStatement().executeQuery(query);
 

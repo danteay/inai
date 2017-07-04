@@ -9,7 +9,7 @@ CREATE OR REPLACE PROCEDURE java_update_answers(
     UPDATE DET_EVAL_FRACCIONES SET
       RESPUESTA = resp
     WHERE EVALUACION_FRACCION_ID = efId
-    AND ART_FRACC_RESPUESTA_ID = afrId;
+          AND ART_FRACC_RESPUESTA_ID = afrId;
 
     UPDATE EVALUACIONES_FRACCIONES SET
       COMENTARIO = coment,
@@ -21,9 +21,9 @@ CREATE OR REPLACE PROCEDURE java_update_answers(
       fecha_evaluacion = CURRENT_DATE - 1
     WHERE EVALUACION_ID = eval;
 
-  EXCEPTION
+    EXCEPTION
     WHEN OTHERS THEN
-      ROLLBACK;
+    ROLLBACK;
 
   END java_update_answers;
 /
