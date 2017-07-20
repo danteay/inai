@@ -36,8 +36,8 @@ public class Evaluacion {
      */
     public EvaluacionInfo getByEvaluacionId(int id) throws SQLException {
         String query = "SELECT e.*, so.* FROM EVALUACIONES e, SUJETOS_OBLIGADOS so " +
-                "WHERE e.SUJETO_OBLIGADO_ID = so.SUJETO_OBLIGADO_ID " +
-                "AND e.EVALUACION_ID = " + id;
+            "WHERE e.SUJETO_OBLIGADO_ID = so.SUJETO_OBLIGADO_ID " +
+            "AND e.EVALUACION_ID = " + id;
 
         ResultSet res = this.conx.getStatement().executeQuery(query);
 
@@ -82,24 +82,19 @@ public class Evaluacion {
      * Update and manage partial saving and close
      *
      * @param id Evaluation ID
-     * @param percent percent of total questions that was response
-     * @param cierre flag to close evaluation
      * @throws SQLException Exeption in sql execution
      */
-    public void update(int id, float percent, boolean cierre) throws SQLException {
-        String query = "UPDATE Evaluaciones SET resultado = "+percent+", fecha_evaluacion = CURRENT_DATE - 1";
-
-        if (cierre) {
-            query += " cierre = 1";
-        }
-
-        query += " WHERE evaluacion_id = " + id;
+    public void close(int id) throws SQLException {
+        String query = "UPDATE EVALUACIONES SET " +
+            "FECHA_EVALUACION = CURRENT_DATE - 1," +
+            "CIERRE = 1 " +
+            "WHERE evaluacion_id = " + id;
 
         this.conx.getStatement().executeQuery(query);
     }
 
-    public void openEvaluacion(int id) throws SQLException {
-        String query = "UPDATE Evaluaciones SET cierre = 0 WHERE evaluacion_id = " + id;
+    public void open(int id) throws SQLException {
+        String query = "UPDATE EVALUACIONES SET cierre = 0 WHERE evaluacion_id = " + id;
         this.conx.getStatement().executeQuery(query);
     }
 }

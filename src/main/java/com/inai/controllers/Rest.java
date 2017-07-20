@@ -3,16 +3,14 @@ package com.inai.controllers;
 import com.inai.helpers.IOHelpers;
 import com.inai.libs.DB;
 import com.inai.models.*;
-import com.inai.models.input.UpdateQuestion;
+import com.inai.models.input.UpdateAnswerInfo;
 import com.inai.models.output.AnswersInfo;
 import com.inai.models.output.EvaluacionInfo;
 import com.inai.models.output.Pagination;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -27,9 +25,12 @@ import java.util.Map;
 public class Rest {
 
     @GET
-    @Path("/evaluaciones/{evaluacion_id}")
+    @Path("/evaluaciones/{evalId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getArticlesForEvaluation(@Context HttpServletRequest req, @PathParam("evaluacion_id") int id) {
+    public Response getArticlesForEvaluation(
+        @Context HttpServletRequest req,
+        @PathParam("evalId") int id
+    ) {
         Map<String, Object> resp = new HashMap<>();
         int code = 200;
 
@@ -56,9 +57,42 @@ public class Rest {
     }
 
     @GET
-    @Path("/articulos/{articulo_id}/preguntas")
+    @Path("/evaluaciones/{evalId}/articulos/{artId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getQuestionsForArticles(@Context HttpServletRequest req, @PathParam("articulo_id") int id) {
+    public Response getOneArticle(
+        @Context HttpServletRequest req,
+        @PathParam("evalId") int evalId,
+        @PathParam("artId") int artId
+    ) {
+        Map<String, Object> resp = new HashMap<>();
+        int code = 200;
+
+        try {
+            DB conx = new DB();
+            Articulo art = new Articulo(conx);
+            art.getByArticuloId(evalId, artId);
+
+            resp.put("data", art);
+
+            System.out.println(resp);
+            conx.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.put("error", e.getMessage());
+            code = 500;
+        }
+
+        return IOHelpers.response(req, code, resp);
+    }
+
+    @GET
+    @Path("/evaluaciones/{evalId}/articulos/{artId}/preguntas")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getQuestionsForArticles(
+        @Context HttpServletRequest req,
+        @PathParam("evalId") int evalId,
+        @PathParam("artId") int artId
+    ) {
         Map<String, Object> resp = new HashMap<>();
         int code = 200;
 
@@ -67,13 +101,13 @@ public class Rest {
             Pregunta preguntas = new Pregunta(conx);
             Pagination pagination = new Pagination();
 
-            int total = preguntas.getTotalPreguntas(id);
+            int total = preguntas.getTotalPreguntas(artId);
             int page = 1;
             int totalElements = 10;
 
             if (req.getParameter("page") != null) {
                 page = Integer.parseInt(req.getParameter("page")) >= 1 ?
-                        Integer.parseInt(req.getParameter("page")) : page;
+                    Integer.parseInt(req.getParameter("page")) : page;
             }
 
             int pages = (int) Math.ceil((double)total / (double)totalElements);
@@ -92,7 +126,7 @@ public class Rest {
 
             System.out.println(pagination);
 
-            ArrayList<Pregunta> list = preguntas.getByArticuloFraccionId(id, offset, limit);
+            ArrayList<Pregunta> list = preguntas.getByArticuloFraccionId(artId, offset, limit);
             System.out.println(list);
 
             resp.put("pagination", pagination);
@@ -109,9 +143,14 @@ public class Rest {
     }
 
     @GET
-    @Path("/preguntas/{pregunta_id}/respuestas")
+    @Path("/evaluaciones/{evalId}/articulos/{artId}/preguntas/{questId}/respuestas")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAnswersForQuestion(@Context HttpServletRequest req, @PathParam("pregunta_id") int id) {
+    public Response getAnswersForQuestion(
+        @Context HttpServletRequest req,
+        @PathParam("evalId") int evalId,
+        @PathParam("artId") int artId,
+        @PathParam("questId") int id
+    ) {
         Map<String, Object> resp = new HashMap<>();
         int code = 200;
 
@@ -120,8 +159,8 @@ public class Rest {
             Respuesta respuestas = new Respuesta(conx);
 
             AnswersInfo info = new AnswersInfo();
-            info.adjetivos = respuestas.getAdjetivosByarticuloFraccionId(id);
-            info.sustantivos = respuestas.getSustantivosByarticuloFraccionId(id);
+            info.adjetivos = respuestas.getAdjetivosByarticuloFraccionId(evalId, id);
+            info.sustantivos = respuestas.getSustantivosByarticuloFraccionId(evalId, id);
 
             resp.put("data", info);
 
@@ -138,7 +177,9 @@ public class Rest {
     @GET
     @Path("/incidencias")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getIncidencias(@Context HttpServletRequest req) {
+    public Response getIncidencias(
+        @Context HttpServletRequest req
+    ) {
         Map<String, Object> resp = new HashMap<>();
         int code = 200;
 
@@ -160,7 +201,10 @@ public class Rest {
     @PUT
     @Path("/respuestas/update_once")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateQuestion(@Context HttpServletRequest req, UpdateQuestion data) {
+    public Response updateAnswer(
+        @Context HttpServletRequest req,
+        UpdateAnswerInfo data
+    ) {
         Map<String, Object> resp = new HashMap<>();
         int code = 200;
 
@@ -180,9 +224,40 @@ public class Rest {
     }
 
     @PUT
-    @Path("/evaluacion/{evaluacion_id}/close")
+    @Path("/respuestas/many")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response closeEvaluation(@Context HttpServletRequest req, @PathParam("evaluacion_id") int id) {
+    public Response updateManyAnswers(
+        @Context HttpServletRequest req,
+        UpdateAnswerInfo data[]
+    ) {
+        Map<String, Object> resp = new HashMap<>();
+        int code = 200;
+
+        try {
+            DB conx = new DB();
+            Respuesta respuestas = new Respuesta(conx);
+
+            for (UpdateAnswerInfo info : data) {
+                respuestas.update(info);
+            }
+
+            conx.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.put("error", e.getMessage());
+            code = 500;
+        }
+
+        return IOHelpers.response(req, code, resp);
+    }
+
+    @PUT
+    @Path("/evaluacion/{evalId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response closeEvaluation(
+        @Context HttpServletRequest req,
+        @PathParam("evalId") int id
+    ) {
         Map<String, Object> resp = new HashMap<>();
         int code = 200;
 
@@ -190,7 +265,16 @@ public class Rest {
             DB conx = new DB();
             Evaluacion evaluaciones = new Evaluacion(conx);
 
+            if (req.getParameter("status").equals("close")) {
+                evaluaciones.close(id);
+            } else if (req.getParameter("status").equals("open")) {
+                evaluaciones.open(id);
+            } else {
+                code = 404;
+                resp.put("error", "status not found");
+            }
 
+            conx.close();
         } catch (Exception e) {
             e.printStackTrace();
             resp.put("error", e.getMessage());

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen</title>
+
+    <link rel="stylesheet" href="js/semantic/dist/semantic.min.css">
+    <link rel="stylesheet" href="css/general.css?nocache">
+    <link rel="stylesheet" href="css/loader.css?nocache">
+</head>
+
+<body>
+    <div id="main-loader" class="loadercp"></div>
+
+    <nav class="ui fixed inverted menu">
+        <div class="ui container">
+            <div class="header item">
+                <img class="logo" src="http://www.lja.mx/wp-content/uploads/2016/05/inai.png">
+            </div>
+
+            <div class="item">Porcentaje: <span id="fullPercent">0</span> %</div>
+
+            <div class="right menu">
+                <div class="item">
+                    <a id="returnln" href="#" class="ui primary button">Regresar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="ui container">
+        <div class="ui grid">
+            <div class="sixteen wide column" id="message"></div>
+
+            <div class="sixteen wide column">
+                <div class="ui divider"></div>
+            </div>
+
+            <div id="evalInfo" class="sixteen wide column"></div>
+
+            <div id="resumeTable" class="sixteen wide column"></div>
+        </div>
+    </main>
+
+    <script src="js/jquery/dist/jquery.min.js"></script>
+    <script src="js/semantic/dist/semantic.min.js"></script>
+    <script src="js/requirejs/require.js"></script>
+    <script src="js/autoload.js"></script>
+    <script src="js/app/actions/resume.js?nocache"></script>
+</body>
+</html>
