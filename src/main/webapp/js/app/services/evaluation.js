@@ -11,7 +11,8 @@ define(function(){
                     error: function(err) {
                         reject({
                             code: err.status,
-                            error: true
+                            error: true,
+                            service: 'evaluation service'
                         });
                     }
                 });

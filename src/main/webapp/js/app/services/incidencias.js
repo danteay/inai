@@ -6,14 +6,14 @@ define(function(){
                     url: '/api/v1/incidencias',
                     type: 'get',
                     success: function(res) {
-                        console.log(res);
                         resolve(res);
                     },
                     error: function(err) {
                         console.log(err);
                         reject({
                             code: err.status,
-                            error: true
+                            error: true,
+                            service: 'incidencias service'
                         });
                     }
                 });

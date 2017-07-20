@@ -28,7 +28,6 @@ define(function() {
                     function(Questions, Question) {
                         Questions.getByArticle(artId, page)
                             .then(function(res) {
-                                console.log(res);
                                 var questionsId = '#preguntas-art-'+res.articuloId;
 
                                 $(questionsId).html('');

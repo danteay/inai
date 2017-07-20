@@ -1,13 +1,13 @@
 define(function() {
     return {
-        getByQuestion: function(id) {
+        getByQuestion: function(evalId, artId, questId) {
             return new Promise(function(resolve, reject){
                 $.ajax({
-                    url: '/api/v1/preguntas/' + id + '/respuestas',
+                    url: '/api/v1/evaluaciones/'+evalId+'/articulos/'+artId+'/preguntas/'+questId+'/respuestas',
                     type: 'get',
                     success: function(res) {
                         resolve({
-                            afId: id,
+                            afId: questId,
                             info: res
                         });
                     },
@@ -15,7 +15,8 @@ define(function() {
                         console.log(err);
                         reject({
                             code: err.status,
-                            error: true
+                            error: true,
+                            service: 'answers service'
                         });
                     }
                 });

@@ -11,25 +11,24 @@ define(function() {
         </div>
         `,
 
-
-
         add: function(cId, data) {
-            console.log(data);
 
-            var component = this.component
+            const component = this.component
                 .replace('{{title}}', data.descripcion)
                 .replace('{{afId}}', data.articuloFraccionId)
                 .replace('{{afId}}', data.articuloFraccionId);
 
-            var comentInfo = {
+            const comentInfo = {
                 articuloFraccionId: data.articuloFraccionId,
-                comentario: data.comentario
+                comentario: data.comentario,
+                evalId: data.evalId,
+                artId: data.artId
             };
 
             $(cId).html($(cId).html() + component);
 
-            var comentsTag = '#coment-' + data.articuloFraccionId;
-            var aswersTag = '#answers-' + data.articuloFraccionId;
+            const comentsTag = '#coment-' + data.articuloFraccionId;
+            const aswersTag = '#answers-' + data.articuloFraccionId;
 
             require(
                 [

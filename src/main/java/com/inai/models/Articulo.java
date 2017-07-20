@@ -14,6 +14,7 @@ public class Articulo {
     public String articuloClave;
     public String descripcion;
     public int estatus;
+    public double percent;
 
     private transient DB conx;
 
@@ -21,8 +22,13 @@ public class Articulo {
         this.conx = conx;
     }
 
-    public Articulo getByArticuloId(int id) throws SQLException {
-        String query = "SELECT * FROM Evaluaciones WHERE evaluacion_id = " + id;
+    public Articulo getByArticuloId(int evalId, int artId) throws SQLException {
+        String query = "SELECT a.*, FUN_OBT_PORC_ART_EVA(" + evalId +", " + artId + ") AS percent " +
+                "FROM ARTICULOS a " +
+                "WHERE a.ARTICULO_ID = " + artId + " " +
+                "AND a.ESTATUS = 1" +
+                "ORDER BY a.ARTICULO_ID";
+
         ResultSet res = this.conx.getStatement().executeQuery(query);
         res.next();
 
@@ -30,15 +36,17 @@ public class Articulo {
         this.articuloClave = res.getString(2);
         this.descripcion = res.getString(3);
         this.estatus = res.getInt(4);
+        this.percent = res.getDouble(5);
 
         return this;
     }
 
-    public ArrayList<Articulo> getByEvaluacionId(int id) throws SQLException {
-        String query = "SELECT a.* FROM ARTICULOS a, EVALUACIONES_ARTICULOS sa, EVALUACIONES e " +
+    public ArrayList<Articulo> getByEvaluacionId(int evalId) throws SQLException {
+        String query = "SELECT a.*, FUN_OBT_PORC_ART_EVA(" + evalId + ", a.ARTICULO_ID) AS percent " +
+                "FROM ARTICULOS a, EVALUACIONES_ARTICULOS sa, EVALUACIONES e " +
                 "WHERE sa.EVALUACION_ID = e.EVALUACION_ID " +
                 "AND a.ARTICULO_ID = sa.ARTICULO_ID " +
-                "AND e.EVALUACION_ID = " + id + " " +
+                "AND e.EVALUACION_ID = " + evalId + " " +
                 "ORDER BY a.ARTICULO_ID";
 
         ResultSet res = this.conx.getStatement().executeQuery(query);
@@ -51,6 +59,7 @@ public class Articulo {
             art.articuloClave = res.getString(2);
             art.descripcion = res.getString(3);
             art.estatus = res.getInt(4);
+            art.percent = res.getDouble(5);
 
             list.add(art);
         }

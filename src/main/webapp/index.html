@@ -5,8 +5,8 @@
         <title>Inai</title>
 
         <link rel="stylesheet" href="js/semantic/dist/semantic.min.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/loader.css">
+        <link rel="stylesheet" href="css/general.css?nocache">
+        <link rel="stylesheet" href="css/loader.css?nocache">
     </head>
 
     <body>
@@ -14,30 +14,26 @@
 
         <nav class="ui fixed inverted menu">
             <div class="ui container">
-                <a href="#" class="header item">INAI</a>
+                <div class="header item">
+                    <img class="logo" src="http://www.lja.mx/wp-content/uploads/2016/05/inai.png">
+                </div>
 
-                <a href="#" class="item right">Porcentaje: <span id="fullPercent">0</span> %</a>
+                <div class="item">Porcentaje: <span id="fullPercent">0</span> %</div>
 
-                <div class="item right">
-                    <a id="finish" href="#" class="ui primary">Finalizar</a>
+                <div class="right menu">
+                    <div class="item">
+                        <a id="finish" href="#" class="ui primary button">Finalizar</a>
+                    </div>
+                    <div class="item">
+                        <a href="" id="resumen" class="ui button">Resumen</a>
+                    </div>
                 </div>
             </div>
         </nav>
 
         <main class="ui container">
             <div class="ui grid">
-                <div class="sixteen wide column info-so">
-                    <div class="ui piled segment">
-                        <h2 class="ui header">Sujeto obligado <small style="float: right" id="fechaEval"></small></h2>
-                        <div class="ui divider"></div>
-                        <p id="infoSO">
-                            <b>Nombre:</b> <span id="nombreSO"></span> <br/>
-                            <b>Portal:</b> <span id="portalSO"></span> <br/>
-                            <b>Correo:</b> <span id="correoSO"></span> <br/>
-                            <b>Direccion:</b> <span id="direccion"></span> <br/>
-                        </p>
-                    </div>
-                </div>
+                <div id="evalInfo" class="sixteen wide column"></div>
 
                 <div class="sixteen wide column">
                     <h2>Fracciones</h2>
@@ -51,7 +47,7 @@
         <script src="js/jquery/dist/jquery.min.js"></script>
         <script src="js/semantic/dist/semantic.min.js"></script>
         <script src="js/requirejs/require.js"></script>
-        <script src="js/autoload.js"></script>
-        <script src="js/app/actions/index.js"></script>
+        <script src="js/autoload.js?nocache"></script>
+        <script src="js/app/actions/index.js?nocache"></script>
     </body>
 </html>

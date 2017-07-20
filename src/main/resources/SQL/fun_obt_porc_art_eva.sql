@@ -1,10 +1,10 @@
 CREATE OR REPLACE FUNCTION fun_obt_porc_art_eva(
   pEvaluacion_Id NUMBER,
   pArticulo_Id   NUMBER
-) RETURN INTEGER IS
-  nResultado NUMBER := 0;
-  numAnswers NUMBER := 0;
-  cheked     NUMBER := 0;
+) RETURN NUMBER IS
+  nResultado NUMBER(22,2) := 0;
+  numAnswers NUMBER(22,2) := 0;
+  cheked     NUMBER(22,2) := 0;
   BEGIN
     -- COUNT TOTAL OF ANSWERS
     SELECT count(afr.ART_FRACC_RESPUESTA_ID) INTO numAnswers

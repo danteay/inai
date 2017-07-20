@@ -15,7 +15,7 @@ define(function(){
         <div class="title" data-article="{{articleId}}">
             <i class="dropdown icon"></i>
             {{title}} 
-            <span style="float: right;">Completado: {{artPrecent}} %</span>
+            <span style="float: right;">Completado: {{artPercent}} %</span>
         </div>
         <div class="content">
             <div id="preguntas-art-{{articleId}}" class="transition hidden"></div>
@@ -38,24 +38,33 @@ define(function(){
             Question
         ) {
             $('.ui.accordion .title').click(function(){
-                var articleId = $(this).attr('data-article');
+                const artId = $(this).attr('data-article');
+                const evalId = localStorage.getItem('evalId');
 
-                QuestionsService.getByArticle(articleId)
+                QuestionsService.getByArticle(evalId, artId, 1)
                     .then(function(res) {
-                        var questionsId = '#preguntas-art-'+res.articuloId;
+                        const questionsId = '#preguntas-art-'+res.artId;
 
                         if ($(questionsId).html() === '') {
                             for (var i = 0; i < res.data.data.length; i++) {
-                                Question.add(questionsId, res.data.data[i]);
+                                const data = {
+                                    evalId: res.evalId,
+                                    artId: res.artId,
+                                    descripcion: res.data.data[i].descripcion,
+                                    comentario: res.data.data[i].comentario,
+                                    articuloFraccionId: res.data.data[i].articuloFraccionId
+                                };
+
+                                Question.add(questionsId, data);
                             }
                         }
 
-                        var pagInfo = {
+                        const pagInfo = {
                             pag: res.data.pagination,
-                            artId: res.articuloId
+                            artId: res.artId
                         };
 
-                        Pagination.render('#pagination-art-'+res.articuloId, pagInfo);
+                        Pagination.render('#pagination-art-'+res.artId, pagInfo);
                     })
                     .catch(function(err) {
                         throw err;
@@ -64,7 +73,7 @@ define(function(){
         },
 
         render: function(cId, data) {
-            var _this = this;
+            const _this = this;
 
             require(this.required,
                 function(
@@ -75,19 +84,19 @@ define(function(){
                     var items = '';
 
                     for (var i = 0; i < data.length; i++){
-                        var articuloId = data[i].articuloId;
-                        var title = 'Articulo ' + data[i].articuloClave + ': '+data[i].descripcion;
+                        const articuloId = data[i].articuloId;
+                        const title = 'Articulo ' + data[i].articuloClave + ': '+data[i].descripcion;
+                        const percent = data[i].percent;
 
-                        var aux = _this.item
+                        items += _this.item
                             .replace('{{title}}', title)
                             .replace('{{articleId}}', articuloId)
                             .replace('{{articleId}}', articuloId)
-                            .replace('{{articleId}}', articuloId);
-
-                        items = items + aux;
+                            .replace('{{articleId}}', articuloId)
+                            .replace('{{artPercent}}', percent);
                     }
 
-                    var component = _this.component.replace('{{items}}', items);
+                    const component = _this.component.replace('{{items}}', items);
 
                     $(cId).html(component);
                     $('.ui.accordion').accordion();

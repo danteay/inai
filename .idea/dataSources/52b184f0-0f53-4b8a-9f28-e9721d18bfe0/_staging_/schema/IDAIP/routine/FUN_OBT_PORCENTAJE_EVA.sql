@@ -2,9 +2,9 @@ CREATE OR REPLACE FUNCTION fun_obt_porcentaje_eva(
   pEvaluacion_Id NUMBER
 )
 RETURN INTEGER IS
-  nResultado NUMBER := 0;
-  numAnswers NUMBER := 0;
-  checked    NUMBER := 0;
+  nResultado FLOAT := 0;
+  numAnswers FLOAT := 0;
+  checked    FLOAT := 0;
 BEGIN
 
   SELECT count(afr.ART_FRACC_RESPUESTA_ID) INTO numAnswers
