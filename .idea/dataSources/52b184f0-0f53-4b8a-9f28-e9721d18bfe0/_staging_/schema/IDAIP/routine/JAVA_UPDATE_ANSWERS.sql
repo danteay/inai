@@ -1,0 +1,29 @@
+CREATE OR REPLACE PROCEDURE java_update_answers(
+  eval NUMBER,
+  resp NUMBER,
+  efId NUMBER,
+  afrId NUMBER,
+  coment VARCHAR2
+) AS
+  BEGIN
+    UPDATE DET_EVAL_FRACCIONES SET
+      RESPUESTA = resp
+    WHERE EVALUACION_FRACCION_ID = efId
+    AND ART_FRACC_RESPUESTA_ID = afrId;
+
+    UPDATE EVALUACIONES_FRACCIONES SET
+      COMENTARIO = coment,
+      RESPUESTA = resp
+    WHERE EVALUACION_FRACCION_ID = efId;
+
+    UPDATE EVALUACIONES SET
+      RESULTADO = FUN_OBT_PORCENTAJE_EVA(eval),
+      fecha_evaluacion = CURRENT_DATE - 1
+    WHERE EVALUACION_ID = eval;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      ROLLBACK;
+
+  END java_update_answers;
+/

@@ -1,36 +1,53 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Angular Tour of Heroes</title>
-    <base href="/">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="semanticui/semantic.min.css">
-    <link rel="stylesheet" href="css/general.css">
+    <head>
+        <meta charset="UTF-8">
+        <title>Inai</title>
 
-    <!-- Polyfills -->
-    <script src="node_modules/core-js/client/shim.min.js"></script>
+        <link rel="stylesheet" href="js/semantic/dist/semantic.min.css">
+        <link rel="stylesheet" href="css/general.css?nocache">
+        <link rel="stylesheet" href="css/loader.css?nocache">
+    </head>
 
-    <script src="node_modules/zone.js/dist/zone.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <body>
+        <div id="main-loader" class="loadercp"></div>
 
-    <script src="systemjs.config.js"></script>
-    <script>System.import('main.js').catch(function(err){ console.error(err); });</script>
-</head>
+        <nav class="ui fixed inverted menu">
+            <div class="ui container">
+                <div class="header item">
+                    <img class="logo" src="http://www.lja.mx/wp-content/uploads/2016/05/inai.png">
+                </div>
 
-<body>
-    <top-nav></top-nav>
+                <div class="item">Porcentaje: <span id="fullPercent">0</span> %</div>
 
-    <main class="ui container">
-        <div class="ui gird">
-            <div class="sixteen wide column">
-                <sujeto-obligado></sujeto-obligado>
+                <div class="right menu">
+                    <div class="item">
+                        <a id="finish" href="#" class="ui primary button">Finalizar</a>
+                    </div>
+                    <div class="item">
+                        <a href="" id="resumen" class="ui button">Resumen</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
+        </nav>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="semanticui/semantic.min.js"></script>
-</body>
+        <main class="ui container">
+            <div class="ui grid">
+                <div id="evalInfo" class="sixteen wide column"></div>
+
+                <div class="sixteen wide column">
+                    <h2>Fracciones</h2>
+                    <div class="ui divider"></div>
+                </div>
+
+                <div id="fracciones" class="sixteen wide column"></div>
+            </div>
+        </main>
+
+        <script src="js/jquery/dist/jquery.min.js"></script>
+        <script src="js/semantic/dist/semantic.min.js"></script>
+        <script src="js/requirejs/require.js"></script>
+        <script src="js/autoload.js?nocache"></script>
+        <script src="js/app/actions/index.js?nocache"></script>
+    </body>
 </html>
