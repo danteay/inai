@@ -1,3 +1,4 @@
+-- MAIN JAVA PACKAGE
 CREATE OR REPLACE PACKAGE javapkg AS
   PROCEDURE update_answer(
     eval NUMBER,
@@ -46,6 +47,7 @@ CREATE OR REPLACE PACKAGE BODY javapkg AS
   ) AS
       subtotal FLOAT;
     BEGIN
+      -- GET PERCENT EVAL
       subtotal := FUN_OBT_PORCENTAJE_EVA(eval);
 
       UPDATE EVALUACIONES SET
