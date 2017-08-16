@@ -4,30 +4,31 @@ require(
         'services/evaluation',
         'components/evaluation-info',
         'components/accordion',
-        'components/loader'
+        'components/loader',
+        'components/nav-actions'
     ],
     function(
         URI,
         Evaluation,
         EvalInfo,
         Accordion,
-        Loader
+        Loader,
+        NavActions
     ) {
         Loader.render('#main-loader');
         const query = URI(location.href).query(true);
 
-        localStorage.setItem("evalId", query.id);
-
         Evaluation.get(query.id)
             .then(function(res) {
                 try {
+                    NavActions.render('#nav_actions', res.data);
                     EvalInfo.render('#evalInfo', res.data);
                     Accordion.render('#fracciones', res.data.articulos);
 
                     $('#fullPercent').html(res.data.resultado);
-                    $('#resumen').attr('href', '/resume.html?id='+res.data.evaluacionId);
-
                     $('#main-loader').css('display', 'none');
+
+                    localStorage.setItem('evalInfo', JSON.stringify(res.data));
                 } catch (e) {
                     return Promise.reject(e);
                 }

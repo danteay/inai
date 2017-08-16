@@ -267,8 +267,10 @@ public class Rest {
 
             if (req.getParameter("status").equals("close")) {
                 evaluaciones.close(id);
+                resp.put("evalId", id);
             } else if (req.getParameter("status").equals("open")) {
                 evaluaciones.open(id);
+                resp.put("evalId", id);
             } else {
                 code = 404;
                 resp.put("error", "status not found");

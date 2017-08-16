@@ -24,9 +24,7 @@ define(function(){
                 <div class="ui grid">
                     <div id="pagination-art-{{articleId}}" class="twelve wide column"></div>
                     <div class="four wide column text-right">
-                        <button class="ui primary button">
-                            Guardar
-                        </button>
+                        <button class="ui primary button" {{hide_save}}>Guardar</button>
                     </div>
                 </div>
             </p>
@@ -39,9 +37,9 @@ define(function(){
         ) {
             $('.ui.accordion .title').click(function(){
                 const artId = $(this).attr('data-article');
-                const evalId = localStorage.getItem('evalId');
+                const evalInfo = JSON.parse(localStorage.getItem('evalInfo'));
 
-                QuestionsService.getByArticle(evalId, artId, 1)
+                QuestionsService.getByArticle(evalInfo.evaluacionId, artId, 1)
                     .then(function(res) {
                         const questionsId = '#preguntas-art-'+res.artId;
 
@@ -67,6 +65,7 @@ define(function(){
                         Pagination.render('#pagination-art-'+res.artId, pagInfo);
                     })
                     .catch(function(err) {
+                        console.log(err);
                         throw err;
                     });
             });
@@ -74,6 +73,7 @@ define(function(){
 
         render: function(cId, data) {
             const _this = this;
+            const evalInfo = JSON.parse(localStorage.getItem('evalInfo'));
 
             require(this.required,
                 function(
@@ -93,7 +93,8 @@ define(function(){
                             .replace('{{articleId}}', articuloId)
                             .replace('{{articleId}}', articuloId)
                             .replace('{{articleId}}', articuloId)
-                            .replace('{{artPercent}}', percent);
+                            .replace('{{artPercent}}', percent)
+                            .replace('{{hide_save}}', evalInfo.cierre === 1 ? 'style="display: none"': '');
                     }
 
                     const component = _this.component.replace('{{items}}', items);

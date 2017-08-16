@@ -27,7 +27,7 @@ define(function() {
                     data-efid="{{afId}}"
                     data-afrid="{{afrId}}"
                     value="{{value}}"
-                    {{checked}}>
+                    {{checked}} {{disable}}>
                 <label>{{label}}</label>
             </div>
         </div>
@@ -57,13 +57,17 @@ define(function() {
                             var auxSus = '';
                             var auxAdj = '';
 
+                            const evalInfo = JSON.parse(localStorage.getItem('evalInfo'));
+                            const statusBlock = evalInfo.cierre === 1 ? 'disabled' : '';
+
                             if (sustantivos.length >= 1) {
                                 for (var i = 0; i < sustantivos.length; i++) {
                                     var aux1 = _this.item
                                         .replace('{{afId}}', sustantivos[i].articuloFraccionId)
                                         .replace('{{afrId}}', sustantivos[i].artFraccRespuestaId)
                                         .replace('{{value}}', sustantivos[i].valor)
-                                        .replace('{{label}}', sustantivos[i].respuesta);
+                                        .replace('{{label}}', sustantivos[i].respuesta)
+                                        .replace('{{disable}}', statusBlock);
 
                                     if (sustantivos[i].checked) {
                                         aux1 = aux1.replace('{{checked}}', 'checked');
@@ -81,7 +85,8 @@ define(function() {
                                         .replace('{{afId}}', adjetivos[i].articuloFraccionId)
                                         .replace('{{afrId}}', adjetivos[i].artFraccRespuestaId)
                                         .replace('{{value}}', adjetivos[i].valor)
-                                        .replace('{{label}}', adjetivos[i].respuesta);
+                                        .replace('{{label}}', adjetivos[i].respuesta)
+                                        .replace('{{disable}}', statusBlock);
 
                                     if (adjetivos[i].checked) {
                                         aux2 = aux2.replace('{{checked}}', 'checked');
@@ -97,6 +102,7 @@ define(function() {
                             $('#answ-adj-'+res.afId).html(auxAdj);
                         })
                         .catch(function(err){
+                            console.log(err);
                             throw err;
                         });
                 }

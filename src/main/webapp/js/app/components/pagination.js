@@ -17,8 +17,9 @@ define(function() {
 
         events: function(){
             $('.reload-page').click(function(){
-                var artId = $(this).attr('data-artid');
-                var page = $(this).attr('data-page');
+                const artId = $(this).attr('data-artid');
+                const page = $(this).attr('data-page');
+                const evalInfo = JSON.parse(localStorage.getItem('evalInfo'));
 
                 require(
                     [
@@ -26,17 +27,26 @@ define(function() {
                         'components/question'
                     ],
                     function(Questions, Question) {
-                        Questions.getByArticle(artId, page)
+                        Questions.getByArticle(evalInfo.evaluacionId, artId, page)
                             .then(function(res) {
-                                var questionsId = '#preguntas-art-'+res.articuloId;
+                                var questionsId = '#preguntas-art-'+res.artId;
 
                                 $(questionsId).html('');
 
                                 for (var i = 0; i < res.data.data.length; i++) {
-                                    Question.add(questionsId, res.data.data[i]);
+                                    const data = {
+                                        evalId: res.evalId,
+                                        artId: res.artId,
+                                        descripcion: res.data.data[i].descripcion,
+                                        comentario: res.data.data[i].comentario,
+                                        articuloFraccionId: res.data.data[i].articuloFraccionId
+                                    };
+
+                                    Question.add(questionsId, data);
                                 }
                             })
                             .catch(function(err) {
+                                console.log(err);
                                 throw err;
                             });
                     }
