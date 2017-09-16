@@ -35,7 +35,20 @@ public class Evaluacion {
      * @throws SQLException Exception in sql execution
      */
     public EvaluacionInfo getByEvaluacionId(int id) throws SQLException {
-        String query = "SELECT e.*, so.* FROM EVALUACIONES e, SUJETOS_OBLIGADOS so " +
+        String query = "SELECT " +
+            "e.EVALUACION_ID, " +
+            "e.PERIODO_ID, " +
+            "e.SUJETO_OBLIGADO_ID, " +
+            "e.ARTICULO_ID, " +
+            "e.FECHA_EVALUACION, " +
+            "e.USUARIO_EVALUA, " +
+            "e.ESTATUS, " +
+            "e.RESPUESTAS, " +
+            "e.TIPO_EVALUACION, " +
+            "e.CIERRE," +
+            "FUN_OBT_PORC_EVALUACION(e.EVALUACION_ID) as result," +
+            "so.* " +
+            "FROM EVALUACIONES e, SUJETOS_OBLIGADOS so " +
             "WHERE e.SUJETO_OBLIGADO_ID = so.SUJETO_OBLIGADO_ID " +
             "AND e.EVALUACION_ID = " + id;
 

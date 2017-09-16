@@ -9,7 +9,7 @@ define(function(){
         get: function(id) {
             return new Promise(function(resolve, reject) {
                 $.ajax({
-                    method: 'get',
+                    type: 'get',
                     url: '/api/v1/evaluaciones/'+id,
                     success: function(res) {
                         resolve(res);
@@ -34,7 +34,7 @@ define(function(){
         setStatus: function(id, status) {
             return new Promise(function(resolve, reject) {
                 $.ajax({
-                    method: 'put',
+                    type: 'post',
                     url: '/api/v1/evaluaciones/' + id + '/?status=' + status,
                     success: function(res) {
                         resolve(res);

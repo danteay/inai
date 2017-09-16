@@ -22,7 +22,8 @@ define(function() {
                 articuloFraccionId: data.articuloFraccionId,
                 comentario: data.comentario,
                 evalId: data.evalId,
-                artId: data.artId
+                artId: data.artId,
+                respuesta: data.respuesta
             };
 
             $(cId).html($(cId).html() + component);

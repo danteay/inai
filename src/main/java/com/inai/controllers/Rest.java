@@ -10,6 +10,8 @@ import com.inai.models.output.Pagination;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -23,6 +25,19 @@ import java.util.Map;
 
 @Path("/v1")
 public class Rest {
+
+    @OPTIONS
+    @Path("*")
+    @Produces("*/*")
+    public Response CORS(@Context HttpServletRequest req) {
+        return Response
+            .status(200)
+            .header("Access-Control-Allow-Origin", "*")
+            .header("Access-Control-Allow-Methods", "*")
+            .header("Allow", "HEAD,GET,PUT,POST,DELETE,OPTIONS")
+            .header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control")
+            .build();
+    }
 
     @GET
     @Path("/evaluaciones/{evalId}")
@@ -251,7 +266,7 @@ public class Rest {
         return IOHelpers.response(req, code, resp);
     }
 
-    @PUT
+    @POST
     @Path("/evaluacion/{evalId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response closeEvaluation(

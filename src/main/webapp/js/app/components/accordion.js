@@ -50,6 +50,7 @@ define(function(){
                                     artId: res.artId,
                                     descripcion: res.data.data[i].descripcion,
                                     comentario: res.data.data[i].comentario,
+                                    respuesta: res.data.data[i].respuesta,
                                     articuloFraccionId: res.data.data[i].articuloFraccionId
                                 };
 
